@@ -1,4 +1,4 @@
-package io.practical.p0004;
+package io.practical.p0006;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -33,10 +33,11 @@ public class MasterCounter {
 		this.counter = counter;
 		this.latch = latch;
 		this.limit = limit;
+		this.counter.setLatch(this.latch);
 	}
 
 	public void increment() {
-		ExecutorService executorService = Executors.newFixedThreadPool(16);
+		ExecutorService executorService = Executors.newFixedThreadPool(12);
 		for (int i = 0; i < limit; i++) {
 			executorService.execute(counter);
 		}

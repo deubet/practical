@@ -1,4 +1,4 @@
-package io.practical.p0004;
+package io.practical.p0006;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -15,10 +15,10 @@ public class MasterCounterBenchmark {
 	@BenchmarkMode(Mode.AverageTime)
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	@Warmup(iterations = 5)
-	public void testNotSynchro() {
+	public void testNotSynchro() throws InstantiationException {
 		int limit = 1_000_000;
 		CountDownLatch latch = new CountDownLatch(limit);
-		SimpleCounter pc = new SimpleCounter(latch);
+		SimpleCounter pc = (SimpleCounter) UnsafeHelper.getUnsafe().allocateInstance(SimpleCounter.class);
 		MasterCounter mc = new MasterCounter(pc,latch,limit);
 		mc.increment();
 	}
@@ -27,10 +27,10 @@ public class MasterCounterBenchmark {
 	@BenchmarkMode(Mode.AverageTime)
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	@Warmup(iterations = 5)
-	public void testSynchro() {
+	public void testSynchro() throws InstantiationException {
 		int limit = 1_000_000;
 		CountDownLatch latch = new CountDownLatch(limit);
-		SimpleCounter pc = new SynchronizedCounter(latch);
+		SimpleCounter pc = (SimpleCounter) UnsafeHelper.getUnsafe().allocateInstance(SynchronizedCounter.class);
 		MasterCounter mc = new MasterCounter(pc,latch,limit);
 		mc.increment();
 	}
@@ -39,10 +39,10 @@ public class MasterCounterBenchmark {
 	@BenchmarkMode(Mode.AverageTime)
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	@Warmup(iterations = 5)
-	public void testSynchroInside() {
+	public void testSynchroInside() throws InstantiationException {
 		int limit = 1_000_000;
 		CountDownLatch latch = new CountDownLatch(limit);
-		SimpleCounter pc = new SynchronizedInsideCounter(latch);
+		SimpleCounter pc = (SimpleCounter) UnsafeHelper.getUnsafe().allocateInstance(SynchronizedInsideCounter.class);
 		MasterCounter mc = new MasterCounter(pc,latch,limit);
 		mc.increment();
 	}
@@ -51,10 +51,10 @@ public class MasterCounterBenchmark {
 	@BenchmarkMode(Mode.AverageTime)
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	@Warmup(iterations = 5)
-	public void testAtomic() {
+	public void testAtomic() throws InstantiationException {
 		int limit = 1_000_000;
 		CountDownLatch latch = new CountDownLatch(limit);
-		SimpleCounter pc = new AtomicIntCounter(latch);
+		SimpleCounter pc = (SimpleCounter) UnsafeHelper.getUnsafe().allocateInstance(AtomicIntCounter.class);
 		MasterCounter mc = new MasterCounter(pc,latch,limit);
 		mc.increment();
 	}
