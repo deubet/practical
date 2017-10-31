@@ -1,6 +1,6 @@
-package io.practical.p0006;
+package io.practical.p0007;
 
-import java.util.concurrent.CountDownLatch;
+
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
